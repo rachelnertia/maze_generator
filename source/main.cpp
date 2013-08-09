@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <fstream>
+#include <iostream>
 
 #define SCREEN_WIDTH	640
 #define SCREEN_HEIGHT	480
@@ -15,6 +16,10 @@
 #define GRID_WIDTH	20
 #define GRID_HEIGHT	20
 
+
+// Event structure:
+SDL_Event event;
+bool quit;
 
 //File stream for the game log.
 std::ofstream logger( "log.txt" );
@@ -48,12 +53,11 @@ int main(int argc, char* args[]) {
 	srand(time(NULL));
 
 	// bool representing whether or not the user has Xed out the window
-	bool quit = false;
+	quit = false;
 
 	// Surfaces:
 	SDL_Surface* screen = NULL;
-	// Event structure:
-	SDL_Event event;
+	
 
 	// Initialise SDL
 	log("initialising SDL");
@@ -129,6 +133,8 @@ void DepthFirstSearch(Cell grid[GRID_WIDTH][GRID_HEIGHT], SDL_Surface* surface) 
 
 	std::stack<Cell> stack;
 
+	//bool advance = false;
+
 	// while there are unvisited cells
 	while (GetNumberOfUnvisitedCells(grid) > 0) {
 		// if the current cell has any neighbours which have not been visited
@@ -179,6 +185,23 @@ void DepthFirstSearch(Cell grid[GRID_WIDTH][GRID_HEIGHT], SDL_Surface* surface) 
 
 		DrawGrid(grid, surface);
 		SDL_Delay(5);
+
+		/*advance = false;
+
+		while (advance == false) {
+			while(SDL_PollEvent(&event)) {
+				switch(event.type) {
+					case SDL_KEYDOWN:
+						if (event.key.keysym.sym == SDLK_RETURN) {
+							advance = true;
+						}
+						break;
+					case SDL_QUIT:
+						return;
+				}
+			}
+		}*/
+
 	}
 
 }
@@ -206,7 +229,7 @@ std::vector<GridRef> GetUnvisitedNeighbours(Cell grid[GRID_WIDTH][GRID_HEIGHT], 
 			list.push_back( GridRef(cell.x - 1, cell.y) );
 		}
 	}
-	if (cell.x < GRID_WIDTH) {
+	if (cell.x < GRID_WIDTH - 1) {
 		// to the right/east
 		if ( (grid[cell.x + 1][cell.y]).visited == false ) {
 			list.push_back( GridRef(cell.x + 1, cell.y) );
@@ -218,7 +241,7 @@ std::vector<GridRef> GetUnvisitedNeighbours(Cell grid[GRID_WIDTH][GRID_HEIGHT], 
 			list.push_back( GridRef(cell.x, cell.y - 1) );
 		}
 	}
-	if (cell.y < GRID_HEIGHT) {
+	if (cell.y < GRID_HEIGHT -1) {
 		// check the cell on top/to the north
 		if ( (grid[cell.x][cell.y + 1]).visited == false ) {
 			list.push_back( GridRef(cell.x, cell.y + 1) );
