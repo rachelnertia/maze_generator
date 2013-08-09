@@ -6,23 +6,21 @@
 #define SOUTH	2
 #define WEST	3
 
-class Cell {
-private:
+struct GridRef {
+	int x, y;
+	GridRef() {x = 0; y= 0;};
+	GridRef(int _x, int _y) { x = _x; y = _y; };
+};
+
+struct Cell {
+	GridRef gridRef;
 	bool visited;
 	// array of bools representing which directions the cell is 'open'
 	// that is, has no wall
 	bool connectedDirections[4];
-
-public:
+	//
 	Cell();
-	//
-	bool isVisited() { return visited; };
-	//
-	bool isConnectedInDir(int);
-	//
-	// connect this cell with a neighbouring cell
-	void makeConnection(int);
-
+	Cell(int, int);
 };
 
 
