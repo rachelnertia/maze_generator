@@ -10,20 +10,11 @@ CC = g++
 CFLAGS = -g -O3 -Wall -I headers
 
 # libraries to link
-LIBS = -lmingw32 -lSDLmain -lSDL
+LIBS = -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_ttf
 
 # The name of the program to build, set to the name of the directory we're working in
 TARGET = $(shell basename $(CURDIR))
 
-# The object files to link into the final program.
-# The rules below will build foo.o from foo.cpp automatically.
-#OBJECTS = \
-#	$(TARGET).o \
-#	game.o \
-#	tools.o
-
-# IDEA: Make a list of filenames (sans-suffix) from the source directory
-# so we know what .o files to look for in an 'objects' subdir
 # directory wot cpp files are in
 SOURCES := source
 # list of the non-directory names of the .cpp files in the source folder
@@ -35,13 +26,6 @@ OBJDIR := build
 #
 OBJECTS := $(addprefix $(OBJDIR)/, $(OFILES))
 
-
-
-#This simple example sets the variable ‘files’ to the list of all files in the directories in the list ‘dirs’:
-
-#     dirs := a b c d
-#     files := $(foreach dir,$(dirs),$(wildcard $(dir)/*))
-
 # The default target to make if none is specified.
 all: $(TARGET).exe
 	@echo All done!
@@ -51,6 +35,7 @@ $(TARGET).exe: $(OFILES)
 	$(CC) -o $@ $(OBJECTS) $(LIBS)
 
 %.o: %.cpp
+	@mkdir -p build
 	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$@
 
 # find .cpp files in the 'source' subdirectory
