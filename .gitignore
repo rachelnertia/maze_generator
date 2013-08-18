@@ -11,6 +11,9 @@
 *.sublime-project
 *.sublime-workspace
 
+# program output #
+log.txt
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
